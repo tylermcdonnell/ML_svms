@@ -44,29 +44,34 @@ testLabels  = testLabels';
 % Compare to baseline PCA + KNN performance.
 
 % Different training sizes for learning curve.
-trainSize = [ 10, 100, 500, 1000, 10000, 60000 ];
+trainSize = [ 10, 25, 50, 100, 500, 1000, 10000, 60000 ];
+results   = zeros(1, length(trainSize));
 
-for N = trainSize
+for i = 1:length(trainSize)
+   N = trainSize(i);
+    
    % Build train set.
    thisTrainSet    = double(trainImages(1:N,:));
    thisTrainLabels = double(trainLabels(1:N));
- 
-   N
    
-   disp('Train')
-   testsvm(thisTrainSet, thisTrainLabels,...
-           thisTrainSet, thisTrainLabels)
-   
-   disp('Test')
-   
-   % Benchmark SVM.
-   testsvm(thisTrainSet, thisTrainLabels,...
-           testImages, testLabels)
-   
-   % Benchmark PCA + KNN.
-   
-
+   % Test SVM.
+   results(i) = testsvm(thisTrainSet, thisTrainLabels,...
+                        testImages, testLabels)
 end
+
+knnTrainSizes = [ 10, 250, 7000, 60000 ];  
+knnResults    = [ 0.0, 0.80, 0.90, 0.94 ];
+
+% Plot results.
+figure()
+plot(trainSize, results,...
+     knnTrainSizes, knnResults);
+xlabel('Training Examples');
+ylabel('Accuracy');
+curtick = get(gca, 'XTick');
+set(gca, 'XTickLabel', cellstr(num2str(curtick(:))));
+axis([0 60000 0 1])
+legend('SVM-Rbf', 'KNN')
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

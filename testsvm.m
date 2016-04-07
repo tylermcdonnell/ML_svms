@@ -15,7 +15,9 @@ trainSet = double(trainSet);
 testSet  = double(testSet);
 
 % Train SVM.
-t = templateSVM('Standardize', 1, 'KernelFunction', 'rbf', 'KernelScale','auto');
+t = templateSVM('Standardize', 1,... 
+                'KernelFunction', 'rbf',... 
+                'KernelScale','auto');
 svmClassifier = fitcecoc(trainSet, trainLabels, 'Learners', t);
 
 % Classify test set.
