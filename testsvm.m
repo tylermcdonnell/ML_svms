@@ -15,13 +15,14 @@ trainSet = double(trainSet);
 testSet  = double(testSet);
 
 % Train SVM.
-svmClassifier = fitcecoc(trainSet, trainLabels);
+t = templateSVM('Standardize', 1, 'KernelFunction', 'rbf', 'KernelScale','auto');
+svmClassifier = fitcecoc(trainSet, trainLabels, 'Learners', t);
 
 % Classify test set.
 results = predict(svmClassifier, testSet);
 
 % Compute accuracy.
-correct  = nnz((results == testLabels'));
+correct  = nnz((results == testLabels));
 accuracy = double(correct) / double(length(testLabels));
 
 end
