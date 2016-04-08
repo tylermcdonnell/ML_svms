@@ -20,6 +20,7 @@ t = templateSVM('Standardize', 1,...
                 'KernelScale','auto');
 svmClassifier = fitcecoc(trainSet, trainLabels, 'Learners', t);
 
+disp('Classifying...')
 % Classify test set.
 results = predict(svmClassifier, testSet);
 
